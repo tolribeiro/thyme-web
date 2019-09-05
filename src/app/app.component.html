@@ -1,0 +1,5 @@
+<login-screen *ngIf="!isUserSignedIn" (login)="handleLogin($event)"></login-screen>
+
+<user-dashboard *ngIf="isUserSignedIn" [user]="user"></user-dashboard>
+
+<router-outlet></router-outlet>
