@@ -1,0 +1,16 @@
+<h1>Dashboard</h1>
+<p>Welcome, Chad</p>
+<h3>List of sources</h3>
+
+<span *ngFor="let source of sources; let i = index">
+    <strong>
+        {{ source.desc }}
+    </strong>
+    <br>
+    <span *ngFor="let session of source.sessions">
+        {{ session.date }} - {{ session.tag }} - {{ session.hours }}:{{ session.minutes }}
+        <br>
+    </span>
+    <br>
+    <br>
+</span>

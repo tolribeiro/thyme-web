@@ -1,0 +1,24 @@
+<div class="login-box">
+    <h1>Thyme</h1>
+    <h3>Login</h3>
+    <p *ngIf="areCredentialsWrong" class="wrong-creds">Wrong email or password</p>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div>
+            <label for="email">E-mail</label>
+            <input type="text" formControlName="email"/>
+            <div *ngIf="doesFormContainErrors(f.email)">
+                <div *ngIf="isFieldRequired(f.email)">Email is required</div>
+            </div>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" formControlName="password"/>
+            <div *ngIf="doesFormContainErrors(f.password)">
+                <div *ngIf="isFieldRequired(f.password)">Password is required</div>
+            </div>
+        </div>
+        <div>
+            <button>Login</button>
+        </div>
+    </form>
+</div>

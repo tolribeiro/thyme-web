@@ -1,39 +1,71 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { User } from 'src/app/models/user';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
     selector: 'login-screen',
     styleUrls: ['login-screen.component.scss'],
-    template: `
-        <div class="login-box">
-            <h1>Thyme</h1>
-            <div class="form">
-                <!-- Email -->
-                <div>
-                    <input type="text" placeholder="Enter e-mail">
-                </div>
-                <!-- Password -->
-                <div>
-                    <input type="password" placeholder="Enter password">
-                </div>
-                <div>
-                    <button type="submit" (click)="clickToLogin()">Sign in</button>
-                </div>
-            </div>
-        </div>
-    `
+    templateUrl: `login-screen.component.html`
 })
 
 export class LoginScreenComponent {
-    isUserLoggedIn: boolean = false;
-    @Output()
-    login: EventEmitter<boolean> = new EventEmitter();
-    constructor() {}
+    loginForm: FormGroup;
+    submitted = false;
+    user: User = new User();
+    areCredentialsWrong: boolean = false;
+    
+    constructor(private router: Router, 
+                private formBuilder: FormBuilder, 
+                private authenticationService: AuthenticationService) {}
 
-    clickToLogin() {
-        console.log("clicked to login");
-        this.isUserLoggedIn = true;
-        if (this.isUserLoggedIn) {
-            this.login.emit(true);
+    ngOnInit() {
+        this.setValidatorsForm();
+    }
+
+    setValidatorsForm() {
+        this.loginForm = this.formBuilder.group({
+            email: ['', Validators.required],
+            password: ['', Validators.required]
+        });
+    }
+
+    onSubmit() {
+        this.submitted = true;
+        this.isFormInvalid();
+        this.setUserWithFormValues(this.f.email.value, this.f.password.value);
+        this.navigateUserToDashboard(this.user);
+    }
+
+    doesFormContainErrors(inputField: any) {
+        return this.submitted && inputField.errors;
+    }
+
+    isFieldRequired(inputField: any) {
+        return inputField.errors.required;
+    }
+
+    isFormInvalid() {
+        if (this.loginForm.invalid) {
+            return;
         }
     }
+    
+    setUserWithFormValues(email: string, pwd: string) {
+        this.user.email =  email;
+        this.user.pwd =  pwd;
+    }
+
+    navigateUserToDashboard(user: User) {
+        if (this.authenticationService.login(this.user)) {
+            this.router.navigate(['dashboard']);
+        } else {
+            if (!this.doesFormContainErrors(this.f.email) && !this.doesFormContainErrors(this.f.password)) {
+                this.areCredentialsWrong = true;
+            }
+        }
+    }
+
+    get f() { return this.loginForm.controls; } 
 }

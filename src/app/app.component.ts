@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { User } from './models/user.interface';
 
 @Component({
   selector: 'app-root',
@@ -8,15 +7,8 @@ import { User } from './models/user.interface';
 })
 export class AppComponent {
   title = 'thyme';
-  isUserSignedIn: boolean = false;
-  user: User = { name: 'Thiago' };
 
   ngOnInit() {
     
-  }
-
-  handleLogin(event: boolean) {
-    console.log("User has signed in: " + event);
-    this.isUserSignedIn = true;
   }
 }

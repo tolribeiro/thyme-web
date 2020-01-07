@@ -1,0 +1,8 @@
+<h1>Welcome to Thyme</h1>
+<p>Here is where you'll be able to use Thyme</p>
+
+<h1>
+    <span *ngIf="hours !== 0">{{ hours }}:</span>{{ mins }}:{{ secs }}</h1>
+<button (click)="start()" style="margin-right: 5px;">Start</button>
+<button (click)="stop()" style="margin-right: 5px;">Stop</button>
+<button (click)="reset()">Reset</button>
