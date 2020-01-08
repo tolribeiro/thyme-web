@@ -9,8 +9,7 @@ import { SessionDetailsComponent } from './components/session-details/session-de
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
-
-const CALLBACK_PATH = 'implicit/callback';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginScreenComponent },
@@ -31,7 +30,8 @@ const appRoutes: Routes = [
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    DeviceDetectorModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent], 
