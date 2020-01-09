@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -28,6 +27,19 @@ export class HomeComponent implements OnInit {
     this.changeBtnText();
     this.sessionInfo = this.deviceService.os + " (" + this.deviceService.os_version + "), " 
     + this.deviceService.browser + " " + parseInt(this.deviceService.browser_version);
+
+    if (typeof Worker !== 'undefined') {
+      // Create a new
+      const worker = new Worker('../../app.worker', { type: 'module' });
+      worker.onmessage = ({ data }) => {
+        console.log(`page got message: ${data}`);
+      };
+      worker.postMessage(0);
+
+    } else {
+      // Web Workers are not supported in this environment.
+      // You should add a fallback so that your program still executes correctly.
+    }
   }
 
   start(isContinuing?: boolean) {
