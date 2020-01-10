@@ -1,29 +1,42 @@
-<h1>Thyme Web</h1> 
-<p>The web version of the OS X app Thyme.</p>
+<!-- intro -->
+<div id="intro">
+    <h1>Thyme Web</h1> 
+    <p>The web version of the OS X app Thyme.</p>
+    <hr>
+    <h4>Time Your Tasks</h4>
+    <p>Use the stopwatch below to control how much time you spend on your tasks.</p>
+</div>
+
+<!-- timer -->
+<div id="timer">
+    <h1 #formattedTime>
+        {{ elapsedTime }}
+    </h1>
+    <button (click)="handleBtnAction($event)" style="margin-right: 5px; width:70px;">
+        {{ bttnStrArr[0] }}
+    </button>
+    <button (click)="handleBtnAction($event)" style="margin-right: 5px; width:70px;">{{ bttnStrArr[1] }}</button>
+    <button (click)="handleBtnAction($event)" style="width:70px;">{{ bttnStrArr[2] }}</button>
+    <br>
+    <br>
+    <input type="checkbox" name="tag" (click)="handleTagCheck()"> Ask for tag name when finished
+    <br>
+    <br>
+</div>
+
+<!-- sessions -->
+<div id="section">
+    <strong>Session: </strong> <i>{{ sessionInfo }}</i>
+</div>
 <hr>
-<h4>Time Your Tasks</h4>
-<p>Use the stopwatch below to control how much time you spend on your tasks.</p>
-<h1 #formattedTime>
-    <span *ngIf="hours !== 0">
-        {{ hours }}:
-    </span><span *ngIf="mins <= 9">0</span>{{ mins }}:<span *ngIf="secs <= 9">0</span>{{ secs }}
-</h1>
-<button (click)="handleBtnAction($event)" style="margin-right: 5px; width:70px;">
-    {{ initialTextBtn }}
-</button>
-<button (click)="handleBtnAction($event)" style="margin-right: 5px; width:70px;">Reset</button>
-<button (click)="handleBtnAction($event)" style="width:70px;">Finish</button>
-<br>
-<br>
-<input type="checkbox" name="tag" (click)="handleTagCheck()"> Ask for tag name when finished
-<br>
-<br>
-<strong>Session: </strong> <i>{{ sessionInfo }}</i>
-<hr>
-<strong>List of Tasks:</strong>
-<span *ngIf="!tasks.length"><br><br><i>None</i></span>
-<span *ngFor="let task of tasks; let i = index">
-    <p>{{ task }} <button (click)="deleteTask(i)" style="margin-left:15px;">delete</button></p>
-</span>
+
+<!-- tasks -->
+<div id="tasks">
+    <strong>List of Tasks:</strong>
+    <span *ngIf="!tasks.length"><br><br><i>None</i></span>
+    <span *ngFor="let task of tasks; let i = index">
+        <p>{{ task }} <button (click)="deleteTask(i)" style="margin-left:15px;">delete</button></p>
+    </span>
+</div>
 <hr>
 <button *ngIf="tasks.length" (click)="export()">Export</button>

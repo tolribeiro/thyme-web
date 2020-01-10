@@ -5,108 +5,68 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent implements OnInit {
   @ViewChild('formattedTime', {static: false}) formattedTime: any;
-  now = 0;
-  hours = 0;
-  mins = 0;
-  secs = 0;
-  timer;
-  hasStarted = false;
-  hasStopped = false;
-  initialTextBtn;
-  formattedTimeStr;
+  bttnStrArr = [ButtonTitles.Start, ButtonTitles.Reset, ButtonTitles.Finish];
+  formattedTimeStr: string;
   tasks = [];
   shouldAskForTag = false;
   taskDescFormatted: string;
-  sessionInfo;
+  sessionInfo: string;
+  worker = new Worker('../../app.worker', { type: 'module' });
+  elapsedTime = '00:00';
 
   constructor(private deviceService: DeviceDetectorService) { }
 
   ngOnInit() {
-    this.changeBtnText();
+    this.getCurrentSession();
+  }
+
+  getCurrentSession() {
     this.sessionInfo = this.deviceService.os + " (" + this.deviceService.os_version + "), " 
     + this.deviceService.browser + " " + parseInt(this.deviceService.browser_version);
-
-    if (typeof Worker !== 'undefined') {
-      // Create a new
-      const worker = new Worker('../../app.worker', { type: 'module' });
-      worker.onmessage = ({ data }) => {
-        console.log(`page got message: ${data}`);
-      };
-      worker.postMessage(0);
-
-    } else {
-      // Web Workers are not supported in this environment.
-      // You should add a fallback so that your program still executes correctly.
-    }
   }
 
-  start(isContinuing?: boolean) {
-    this.timer = setInterval(this.tick.bind(this), 1000);
-    this.hasStarted = !this.hasStarted;
-    if (isContinuing) {
-      this.initialTextBtn = 'Stop';
-    } else {
-      this.changeBtnText();
-    }
-  }
-
-  changeBtnText() {
-    if (!this.hasStarted) {
-      this.initialTextBtn = "Start";
-    } else if (this.hasStopped) {
-      this.initialTextBtn = "Continue";
-    } else if (this.hasStarted) {
-      this.initialTextBtn = "Stop";
-    }
-  }
-
-  tick() {
-    this.now++;
-    var remain = this.now;
-    
-    this.hours = Math.floor(remain / 3600);
-    remain -= this.hours * 3600;
-
-    this.mins = Math.floor(remain / 60);
-    remain -= this.mins * 60;
-
-    this.secs = remain;
+  start() {
+    this.postMessageToWorker(ButtonTitles.Start);
+    if (this.bttnStrArr[0] === ButtonTitles.Start || this.bttnStrArr[0] === ButtonTitles.Continue) {
+      this.bttnStrArr[0] = ButtonTitles.Stop;
+    } 
   }
 
   reset () {
-    this.now = 0;
-    this.hours = 0;
-    this.mins = 0;
-    this.secs = 0;
-    this.hasStarted = false;
-    this.hasStopped = true;
-    this.stop();
+    this.postMessageToWorker(ButtonTitles.Reset);
+    this.bttnStrArr[0] = ButtonTitles.Start;
   }
 
-  stop (isContinuing?: boolean) {
-    clearInterval(this.timer);
-    this.timer = null;
-    this.hasStopped = !this.hasStopped;
-    if (isContinuing) {
-      this.initialTextBtn = 'Continue';
-    } else {
-      this.changeBtnText();
+  stop () {
+    this.postMessageToWorker(ButtonTitles.Stop);
+    if (this.bttnStrArr[0] === ButtonTitles.Stop) {
+      this.bttnStrArr[0] = ButtonTitles.Continue;
+    } 
+  }
+
+  postMessageToWorker(message: string) {
+    if (typeof Worker !== 'undefined') {
+      this.worker.postMessage(message);
+      this.worker.onmessage = ({ data }) => {
+        this.elapsedTime = data;
+      };
     }
   }
 
   handleBtnAction(event: any) {
     var btnTxt = event.target.innerText;
-    if (btnTxt === 'Start') {
+    if (btnTxt === ButtonTitles.Start) {
       this.start();
-    } else if (btnTxt === 'Stop') {
-      this.stop(true);
-    } else if (btnTxt === 'Continue') {
-      this.start(true);
-    } else if (btnTxt === 'Reset') {
+    } else if (btnTxt === ButtonTitles.Stop) {
+      this.stop();
+    } else if (btnTxt === ButtonTitles.Continue) {
+      this.start();
+    } else if (btnTxt === ButtonTitles.Reset) {
       this.reset();
-    } else if (btnTxt === 'Finish') {
+    } else if (btnTxt === ButtonTitles.Finish) {
       this.finish();
     }
   }
@@ -128,10 +88,12 @@ export class HomeComponent implements OnInit {
     var taskTagStr = " - ";
     if (this.shouldAskForTag) {
       var taskTag = prompt("Enter a name for this task:");
-      taskTagStr = " - " + taskTag + " - ";
+      if (taskTag) taskTag = " - " + taskTag;
+      taskTagStr = taskTag + " - ";
     }
     this.taskDescFormatted = this.formattedTimeStr + taskTagStr + day + ", " + month + " " + now.getDate() + ", " + now.getFullYear() + " at " + this.addLeadingZero(h) + ":" + this.addLeadingZero(m) + ":" + this.addLeadingZero(s);
     this.tasks.push(this.taskDescFormatted);
+    this.bttnStrArr[0] = ButtonTitles.Start;
   }
 
   handleTagCheck() {
@@ -150,7 +112,6 @@ export class HomeComponent implements OnInit {
   }
 
   export() {
-    // var fileText = "I am the first part of the info being emailed.\r\nI am the second part.\r\nI am the third part.";
     var fileName = "thyme-tasks-"+ new Date().toLocaleString()  + ".txt";
     var taskLines = "";
     this.tasks.forEach(task => {
@@ -160,24 +121,23 @@ export class HomeComponent implements OnInit {
   }
 
   saveTextAsFile (data: BlobPart, filename: string) { 
-    if(!data) {
-        console.error('Console.save: No data')
-        return;
+    if (!data) {
+      console.error('Console.save: No data')
+      return;
     }
 
-    if(!filename) filename = 'console.json'
+    if (!filename) filename = 'console.json'
 
-    var blob = new Blob([data], {type: 'text/plain'}),
-        e    = document.createEvent('MouseEvents'),
-        a    = document.createElement('a')
+    var blob = new Blob([data], {type: 'text/plain'});
+    var e = document.createEvent('MouseEvents');
+    var a = document.createElement('a');
 
     // FOR IE:
-
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(blob, filename);
     } else {
-      var e = document.createEvent('MouseEvents'),
-          a = document.createElement('a');
+      var e = document.createEvent('MouseEvents');
+      var a = document.createElement('a');
 
       a.download = filename;
       a.href = window.URL.createObjectURL(blob);
@@ -186,4 +146,12 @@ export class HomeComponent implements OnInit {
       a.dispatchEvent(e);
     }
   }
+}
+
+enum ButtonTitles {
+  Start = 'Start',
+  Stop = 'Stop',
+  Reset = 'Reset',
+  Finish = 'Finish',
+  Continue = 'Continue'
 }
