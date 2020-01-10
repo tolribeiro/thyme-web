@@ -1,0 +1,8 @@
+<!-- tasks -->
+<div id="tasks">
+    <strong>List of Tasks:</strong>
+    <span *ngIf="!listOfTasks.length"><br><br><i>None</i></span>
+    <span *ngFor="let task of listOfTasks; let i = index">
+        <p>{{ task }} <button (click)="deleteTask(i)" style="margin-left:15px;">delete</button></p>
+    </span>
+</div>

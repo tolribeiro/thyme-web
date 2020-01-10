@@ -10,6 +10,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { TimerComponent } from './components/timer/timer.component';
+import { TasksComponent } from './components/tasks/tasks.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginScreenComponent },
@@ -23,7 +25,9 @@ const appRoutes: Routes = [
     LoginScreenComponent,
     UserDashboardComponent,
     SessionDetailsComponent,
-    HomeComponent
+    HomeComponent,
+    TimerComponent,
+    TasksComponent
   ],
   imports: [
     BrowserModule,
