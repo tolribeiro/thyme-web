@@ -8,35 +8,9 @@
 </div>
 
 <!-- timer -->
-<div id="timer">
-    <h1 #formattedTime>
-        {{ elapsedTime }}
-    </h1>
-    <button (click)="handleBtnAction($event)" style="margin-right: 5px; width:70px;">
-        {{ bttnStrArr[0] }}
-    </button>
-    <button (click)="handleBtnAction($event)" style="margin-right: 5px; width:70px;">{{ bttnStrArr[1] }}</button>
-    <button (click)="handleBtnAction($event)" style="width:70px;">{{ bttnStrArr[2] }}</button>
-    <br>
-    <br>
-    <input type="checkbox" name="tag" (click)="handleTagCheck()"> Ask for tag name when finished
-    <br>
-    <br>
-</div>
+<app-timer></app-timer>
 
 <!-- sessions -->
 <div id="section">
     <strong>Session: </strong> <i>{{ sessionInfo }}</i>
 </div>
-<hr>
-
-<!-- tasks -->
-<div id="tasks">
-    <strong>List of Tasks:</strong>
-    <span *ngIf="!tasks.length"><br><br><i>None</i></span>
-    <span *ngFor="let task of tasks; let i = index">
-        <p>{{ task }} <button (click)="deleteTask(i)" style="margin-left:15px;">delete</button></p>
-    </span>
-</div>
-<hr>
-<button *ngIf="tasks.length" (click)="export()">Export</button>
