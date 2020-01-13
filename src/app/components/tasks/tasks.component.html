@@ -2,10 +2,26 @@
 <div id="tasks" class="center-info">
     <p><strong>List of Tasks:</strong></p>
     <span *ngIf="!listOfTasks.length"><br><br>
-        <!-- <i>None</i> -->
         <img src="../../../assets/none.svg" width="100" alt="">
     </span>
-    <span *ngFor="let task of listOfTasks; let i = index">
-        <p>{{ task }} <button (click)="deleteTask(i)" style="margin-left:15px;">delete</button></p>
-    </span>
+    <div class="table-responsive">
+        <table class="table center no-border">
+            <thead>
+              <tr *ngIf="listOfTasks.length">
+                <th class="text-center">TIME</th>
+                <th class="text-left">NAME</th>
+                <th class="text-left">DATE</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let task of listOfTasks; let i = index" class="shadow-row">
+                <td class="left-border-row text-center">{{ task.time }}</td>
+                <td class="text-left">{{ task.tag }}</td>
+                <td class="text-left">{{ task.date }}</td>
+                <td class="right-border-row delete-txt"><span (click)="deleteTask(i)">Delete</span></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
 </div>

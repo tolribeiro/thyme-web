@@ -5,3 +5,58 @@
 p {
     font-size: 20px;
 }
+
+table.center {
+    width: 56%; 
+    margin-left: 22%; 
+    margin-right: 22%;
+}
+
+th {
+    opacity: .7;
+    padding: 15px;
+}
+
+td {
+    background: #FFFFFF;
+    color: #000000;
+    font-size: 20px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+tr.shadow-row {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    padding-bottom: 1em;
+}
+
+table {
+    border-collapse:separate; 
+    border-spacing: 0 15px; 
+}
+
+tr {
+    border-top: hidden;
+}
+
+.table.no-border tr td, .table.no-border tr th {
+    border-width: 0;
+}
+
+.left-border-row {
+    border-radius: 8px 0 0 8px;
+}
+
+.right-border-row {
+    border-radius: 0 8px 8px 0;
+}
+
+.delete-txt {
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+}
+  
