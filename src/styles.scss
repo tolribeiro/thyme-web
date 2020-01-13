@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    background-color: #0F4C81; 
+    color: #FFFFFF;
+    font-family: 'Lato', sans-serif;
+}
+
+hr {
+    height: 1px;
+    border: 0;
+    color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.4);
+}
