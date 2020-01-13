@@ -17,7 +17,7 @@
             <tbody>
               <tr *ngFor="let task of listOfTasks; let i = index" class="shadow-row">
                 <td class="left-border-row text-center">{{ task.time }}</td>
-                <td class="text-left">{{ task.tag }}</td>
+                <td class="text-left wrap-txt">{{ task.tag }}</td>
                 <td class="text-left">{{ task.date }}</td>
                 <td class="right-border-row delete-txt"><span (click)="deleteTask(i)">Delete</span></td>
               </tr>

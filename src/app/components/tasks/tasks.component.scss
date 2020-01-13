@@ -21,6 +21,9 @@ td {
     background: #FFFFFF;
     color: #000000;
     font-size: 20px;
+}
+
+td.wrap-txt {
     max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
