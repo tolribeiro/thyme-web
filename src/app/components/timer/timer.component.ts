@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-
+import { Title } from '@angular/platform-browser';
+ 
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.component.html',
@@ -16,9 +17,14 @@ export class TimerComponent implements OnInit {
   taskDescFormatted: string;
   tasks = [];
 
-  constructor() { }
+  constructor(private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle(this.getElapsedTimeTitle());
+  }
+
+  getElapsedTimeTitle() {
+    return "(" + this.elapsedTime + ") - Thyme";
   }
 
   start() {
@@ -45,6 +51,7 @@ export class TimerComponent implements OnInit {
       this.worker.postMessage(message);
       this.worker.onmessage = ({ data }) => {
         this.elapsedTime = data;
+        this.titleService.setTitle(this.getElapsedTimeTitle());
       };
     }
   }

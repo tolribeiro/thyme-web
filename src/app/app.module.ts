@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
@@ -37,7 +37,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     DeviceDetectorModule.forRoot()
   ],
-  providers: [],
+  providers: [ Title ],
   bootstrap: [AppComponent], 
   exports: []
 })
