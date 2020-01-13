@@ -1,27 +1,34 @@
 <!-- stopwatch timer -->
-<div id="timer">
+<div id="timer" class="center-info">
     <div class="elapsedTime">
         <h1 #formattedTime>
             {{ elapsedTime }}
         </h1>
     </div>
     <div class="buttonsList">
-        <button (click)="handleBtnAction($event)" style="margin-right: 5px; width:70px;">
+        <button (click)="handleBtnAction($event)">
             {{ bttnStrArr[0] }}
         </button>
-        <button (click)="handleBtnAction($event)" style="margin-right: 5px; width:70px;">{{ bttnStrArr[1] }}</button>
-        <button (click)="handleBtnAction($event)" style="width:70px;">{{ bttnStrArr[2] }}</button>
+        <button (click)="handleBtnAction($event)">{{ bttnStrArr[1] }}</button>
+        <button (click)="handleBtnAction($event)">{{ bttnStrArr[2] }}</button>
     </div>
     <br>
     <div class="settings-boxes">
-        <input type="checkbox" name="tag" (click)="handleTagCheck()"> Ask for tag name when finished
+        <div class="pretty p-default p-curve p-thick p-bigger">
+            <input type="checkbox" name="tag" (click)="handleTagCheck()"/>
+            <div class="state">
+                <label></label>
+            </div>
+        </div>
+        <span class="tag-style">Ask for tag name when finished</span>
     </div>
 </div>
+<hr>
 <!-- list of tasks -->
 <div id="tasks">
     <app-tasks [listOfTasks]="tasks"></app-tasks>
 </div>
-<hr>
+
 <!-- Export -->
 <button *ngIf="tasks.length" (click)="export()">Export</button>
 <br>
