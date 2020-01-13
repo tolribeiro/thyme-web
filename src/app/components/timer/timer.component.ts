@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Task } from 'src/app/models/task.interface';
+import { TasksComponent } from '../tasks/tasks.component';
  
 @Component({
   selector: 'app-timer',
@@ -15,7 +17,7 @@ export class TimerComponent implements OnInit {
   shouldAskForTag = false;
   sessionInfo: string;
   taskDescFormatted: string;
-  tasks = [];
+  tasks: Task[] = [];
 
   constructor(private titleService: Title) { }
 
@@ -85,14 +87,16 @@ export class TimerComponent implements OnInit {
     var day = days[ now.getDay() ];
     var month = months[ now.getMonth() ];
 
-    var taskTagStr = " - ";
     if (this.shouldAskForTag) {
       var taskTag = prompt("Enter a name for this task:");
-      if (taskTag) taskTag = " - " + taskTag;
-      taskTagStr = taskTag + " - ";
     }
-    this.taskDescFormatted = this.formattedTimeStr + taskTagStr + day + ", " + month + " " + now.getDate() + ", " + now.getFullYear() + " at " + this.addLeadingZero(h) + ":" + this.addLeadingZero(m) + ":" + this.addLeadingZero(s);
-    this.tasks.push(this.taskDescFormatted);
+    if (!taskTag) taskTag = '-';
+    this.taskDescFormatted = this.formattedTimeStr + taskTag + day + ", " + month + " " + now.getDate() + ", " + now.getFullYear() + " at " + this.addLeadingZero(h) + ":" + this.addLeadingZero(m) + ":" + this.addLeadingZero(s);
+    let task = new Task();
+    task.time = this.formattedTimeStr;
+    task.tag = taskTag;
+    task.date = day + ', ' + month + " " + now.getDate() + ", " + now.getFullYear() + " at " + this.addLeadingZero(h) + ":" + this.addLeadingZero(m) + ":" + this.addLeadingZero(s);
+    this.tasks.push(task);
     this.bttnStrArr[0] = ButtonTitles.Start;
   }
 
@@ -111,7 +115,7 @@ export class TimerComponent implements OnInit {
     var fileName = "thyme-tasks-"+ new Date().toLocaleString()  + ".txt";
     var taskLines = "";
     this.tasks.forEach(task => {
-      taskLines += task + "\n";
+      taskLines += task.time + " - " + task.tag + " - " + task.date + "\n";
     });
     this.saveTextAsFile(taskLines, fileName);
   }
