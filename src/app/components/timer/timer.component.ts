@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Task } from 'src/app/models/task.interface';
-import { TasksComponent } from '../tasks/tasks.component';
- 
+import { LocalStorageService } from 'ngx-webstorage';
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss']
 })
+@Injectable()
 export class TimerComponent implements OnInit {
   @ViewChild('formattedTime', {static: false}) formattedTime: any;
   bttnStrArr = [ButtonTitles.Start, ButtonTitles.Reset, ButtonTitles.Finish];
@@ -19,10 +19,14 @@ export class TimerComponent implements OnInit {
   taskDescFormatted: string;
   tasks: Task[] = [];
 
-  constructor(private titleService: Title) { }
+  constructor(private titleService: Title, private localStorage: LocalStorageService) { }
 
   ngOnInit() {
     this.titleService.setTitle(this.getElapsedTimeTitle());
+    var retrievedTasks = this.localStorage.retrieve('');
+    if (retrievedTasks !== null) {
+      this.tasks = retrievedTasks;
+    }
   }
 
   getElapsedTimeTitle() {
@@ -97,6 +101,7 @@ export class TimerComponent implements OnInit {
     task.tag = taskTag;
     task.date = day + ', ' + month + " " + now.getDate() + ", " + now.getFullYear() + " at " + this.addLeadingZero(h) + ":" + this.addLeadingZero(m) + ":" + this.addLeadingZero(s);
     this.tasks.push(task);
+    this.localStorage.store('', this.tasks);
     this.bttnStrArr[0] = ButtonTitles.Start;
   }
 

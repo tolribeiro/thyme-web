@@ -12,6 +12,7 @@ import { HomeComponent } from './components/home/home.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { TimerComponent } from './components/timer/timer.component';
 import { TasksComponent } from './components/tasks/tasks.component';
+import { NgxWebstorageModule } from 'ngx-webstorage';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginScreenComponent },
@@ -34,6 +35,7 @@ const appRoutes: Routes = [
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxWebstorageModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     DeviceDetectorModule.forRoot()
   ],
