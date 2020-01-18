@@ -62,4 +62,16 @@ tr {
     font-weight: bold;
     cursor: pointer;
 }
+
+.btn-export {
+    width: 149px;
+    height: 45px;
+    & img {
+        padding-right: 10px;
+    }
+}
+
+.div-right-align-width {
+    width:78.5%;
+}
   

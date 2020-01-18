@@ -1,6 +1,9 @@
 <!-- tasks -->
 <div id="tasks" class="center-info">
     <p><strong>List of Tasks:</strong></p>
+    <div class="text-right div-right-align-width">
+      <button class="btn-export" *ngIf="listOfTasks.length" (click)="export()"><img src='../../../assets/export.svg'> Export</button>
+    </div>
     <span *ngIf="!listOfTasks.length"><br><br>
         <img src="../../../assets/none.svg" width="100" alt="">
     </span>
