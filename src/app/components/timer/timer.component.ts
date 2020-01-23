@@ -91,8 +91,11 @@ export class TimerComponent implements OnInit {
     var day = days[ now.getDay() ];
     var month = months[ now.getMonth() ];
 
+    var taskTag;
     if (this.shouldAskForTag) {
-      var taskTag = prompt("Enter a name for this task:");
+      while (!taskTag) {
+        taskTag = prompt("Enter a name for this task:");
+      }
     }
     if (!taskTag) taskTag = '-';
     this.taskDescFormatted = this.formattedTimeStr + taskTag + day + ", " + month + " " + now.getDate() + ", " + now.getFullYear() + " at " + this.addLeadingZero(h) + ":" + this.addLeadingZero(m) + ":" + this.addLeadingZero(s);
