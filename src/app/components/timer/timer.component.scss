@@ -41,3 +41,10 @@ h1 {
     margin-top: 20px;
     padding-left: 16px;
 }
+
+
+@media only screen and (max-width: 600px) {
+    #tasks {
+        visibility: hidden;
+    }
+}
