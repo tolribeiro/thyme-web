@@ -97,6 +97,9 @@ export class TimerComponent implements OnInit {
     if (!taskTag) taskTag = '-';
     this.taskDescFormatted = this.formattedTimeStr + taskTag + day + ", " + month + " " + now.getDate() + ", " + now.getFullYear() + " at " + this.addLeadingZero(h) + ":" + this.addLeadingZero(m) + ":" + this.addLeadingZero(s);
     let task = new Task();
+    if(this.formattedTimeStr.length === 4) {
+      this.formattedTimeStr = "00:" + this.formattedTimeStr;
+    }
     task.time = this.formattedTimeStr;
     task.tag = taskTag;
     task.date = day + ', ' + month + " " + now.getDate() + ", " + now.getFullYear() + " at " + this.addLeadingZero(h) + ":" + this.addLeadingZero(m) + ":" + this.addLeadingZero(s);
