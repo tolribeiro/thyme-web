@@ -93,7 +93,7 @@ export class TimerComponent implements OnInit {
 
     var taskTag;
     if (this.shouldAskForTag) {
-      while (!taskTag) {
+      while (taskTag !== '') {
         taskTag = prompt("Enter a name for this task:");
       }
     }
