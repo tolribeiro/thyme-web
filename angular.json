@@ -126,6 +126,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "thyme"
+    }
+  },
+  "defaultProject": "thyme",
+  "cli": {
+    "analytics": false
+  }
 }
